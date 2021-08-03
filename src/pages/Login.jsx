@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { getToken } from '../actions';
 
 class Login extends Component {
@@ -14,6 +14,7 @@ class Login extends Component {
       shouldRedirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.renderButton = this.renderButton.bind(this);
   }
 
   async onSubmit(e) {
@@ -38,46 +39,57 @@ class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  renderButton() {
+    return (
+      <Link to="/configuracoes">
+        <button type="button" data-testid="btn-settings">Configurações</button>
+      </Link>
+    );
+  }
+
   render() {
     const { name, email, canLogin, shouldRedirect } = this.state;
 
     if (shouldRedirect) return <Redirect to="/game" />;
 
     return (
-      <form
-        action="GET"
-        onSubmit={ this.onSubmit }
-      >
-        <label htmlFor="name-input">
-          Nome
-          <input
-            type="text"
-            value={ name }
-            name="name"
-            id="name-input"
-            onChange={ this.handleChange }
-            data-testid="input-player-name"
-          />
-        </label>
-        <label htmlFor="email-input">
-          Email
-          <input
-            type="email"
-            value={ email }
-            name="email"
-            id="email-input"
-            onChange={ this.handleChange }
-            data-testid="input-gravatar-email"
-          />
-        </label>
-        <button
-          disabled={ !canLogin }
-          type="submit"
-          data-testid="btn-play"
+      <div>
+        <form
+          action="GET"
+          onSubmit={ this.onSubmit }
         >
-          Jogar
-        </button>
-      </form>
+          <label htmlFor="name-input">
+            Nome
+            <input
+              type="text"
+              value={ name }
+              name="name"
+              id="name-input"
+              onChange={ this.handleChange }
+              data-testid="input-player-name"
+            />
+          </label>
+          <label htmlFor="email-input">
+            Email
+            <input
+              type="email"
+              value={ email }
+              name="email"
+              id="email-input"
+              onChange={ this.handleChange }
+              data-testid="input-gravatar-email"
+            />
+          </label>
+          <button
+            disabled={ !canLogin }
+            type="submit"
+            data-testid="btn-play"
+          >
+            Jogar
+          </button>
+          { this.renderButton() }
+        </form>
+      </div>
     );
   }
 }
