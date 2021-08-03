@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/user-event": "^7.1.2",
     "crypto-js": "^4.0.0",
@@ -12,6 +13,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
@@ -60,8 +62,8 @@
     "mochawesome-merge": "^4.0.3",
     "mochawesome-report-generator": "^5.1.0",
     "stylelint": "^13.8.0",
-    "stylelint-order": "^4.1.0",
-    "stylelint-config-standard": "20.0.0"
+    "stylelint-config-standard": "20.0.0",
+    "stylelint-order": "^4.1.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
