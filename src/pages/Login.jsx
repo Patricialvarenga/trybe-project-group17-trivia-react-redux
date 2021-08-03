@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { getToken } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -7,8 +11,16 @@ class Login extends Component {
       name: '',
       email: '',
       canLogin: false,
+      shouldRedirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  async onSubmit(e) {
+    e.preventDefault();
+    const { fetchToken } = this.props;
+    fetchToken();
+    this.setState({ shouldRedirect: true });
   }
 
   handleChange({ target }) {
@@ -23,12 +35,19 @@ class Login extends Component {
     this.setState({
       canLogin: (EMAIL_REGEX.test(email) && name.length > 0),
     });
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   render() {
-    const { name, email, canLogin } = this.state;
+    const { name, email, canLogin, shouldRedirect } = this.state;
+
+    if (shouldRedirect) return <Redirect to="/game" />;
+
     return (
-      <form>
+      <form
+        action="GET"
+        onSubmit={ this.onSubmit }
+      >
         <label htmlFor="name-input">
           Nome
           <input
@@ -53,7 +72,7 @@ class Login extends Component {
         </label>
         <button
           disabled={ !canLogin }
-          type="button"
+          type="submit"
           data-testid="btn-play"
         >
           Jogar
@@ -63,4 +82,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetchToken: () => dispatch(getToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  fetchToken: PropTypes.func.isRequired,
+};
