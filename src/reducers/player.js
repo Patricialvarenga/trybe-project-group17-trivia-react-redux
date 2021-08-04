@@ -2,8 +2,6 @@ import { FAIL_REQUEST, RECEIVE_TOKEN, REQUEST_TOKEN, GET_NAME_EMAIL } from '../a
 
 const INITIAL_STATE = {
   name: '',
-  assertions: undefined,
-  score: undefined,
   gravatarEmail: undefined,
   token: '',
   loading: false,
