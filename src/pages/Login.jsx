@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
-import { getToken } from '../actions';
+import { getToken, getNameAndEmail } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -19,8 +19,10 @@ class Login extends Component {
 
   async onSubmit(e) {
     e.preventDefault();
-    const { fetchToken } = this.props;
+    const { fetchToken, setNameAndEmail } = this.props;
+    const { name, email } = this.state;
     fetchToken();
+    setNameAndEmail(name, email);
     this.setState({ shouldRedirect: true });
   }
 
@@ -96,10 +98,12 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(getToken()),
+  setNameAndEmail: (name, email) => dispatch(getNameAndEmail(name, email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   fetchToken: PropTypes.func.isRequired,
+  setNameAndEmail: PropTypes.func.isRequired,
 };

@@ -15,6 +15,13 @@ export const failRequest = (payload) => ({
   payload,
 });
 
+export const GET_NAME_EMAIL = 'GET_NAME_EMAIL';
+export const getNameAndEmail = (name, email) => ({
+  type: GET_NAME_EMAIL,
+  name,
+  email,
+});
+
 export const getToken = () => async (dispatch) => {
   dispatch(requestToken());
   const TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
