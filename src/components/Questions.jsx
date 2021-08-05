@@ -1,6 +1,8 @@
+/* eslint-disable max-lines-per-function */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { setNewScore } from '../actions';
 
 class Questions extends React.Component {
@@ -13,10 +15,13 @@ class Questions extends React.Component {
       timer: 30,
       showNext: false,
       score: 0,
+      shouldRedirect: false,
+      showAnswers: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.timerFunction = this.timerFunction.bind(this);
     this.timerEnd = this.timerEnd.bind(this);
+    this.clickNext = this.clickNext.bind(this);
   }
 
   componentDidMount() {
@@ -31,23 +36,18 @@ class Questions extends React.Component {
     };
     const { timer } = this.state;
     const ten = 10;
-    const correctButton = document.querySelector('.correct');
-    const wrongAnswers = document.querySelectorAll('.wrong');
-    correctButton.classList.add('correct-answer');
-    wrongAnswers.forEach((answer) => answer.classList.add('wrong-answer'));
     this.setState({
       showNext: true,
       timer: 0,
-      score: ten + (timer * diffWeight[diff]),
+      showAnswers: true,
     }, () => {
       const { score } = this.state;
       const { scoreUpdater } = this.props;
       const newScore = score + ten + (timer * diffWeight[diff]);
-      if (target.classList.contains('correct')) {
+      if (target.classList.contains('true')) {
         this.setState({ score: newScore });
         scoreUpdater(newScore);
-      }
-      if (target.classList.contains('wrong')) {
+      } else {
         this.setState({ score: 0 });
         scoreUpdater(0);
       }
@@ -60,6 +60,7 @@ class Questions extends React.Component {
       this.setState({
         disabled: true,
         showNext: true,
+        showAnswers: true,
       });
     }
   }
@@ -78,6 +79,16 @@ class Questions extends React.Component {
     }, oneSecond);
   }
 
+  clickNext() {
+    const { index } = this.state;
+    const four = 4;
+    if (index < four) {
+      this.setState({
+        index: index + 1, showAnswers: false, showNext: false,
+      });
+    } else this.setState({ shouldRedirect: true });
+  }
+
   disableButtons() {
     const { timer } = this.state;
     if (timer === 1) {
@@ -88,46 +99,52 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { index, disabled, timer, showNext } = this.state;
-
+    const { index, disabled, timer, showNext, shouldRedirect, showAnswers } = this.state;
+    if (shouldRedirect) return <Redirect to="/feedbacks" />;
     const { questions } = this.props;
+    if (!questions.length) return 'Loading';
+    const alternatives = [
+      ...questions[index].incorrect_answers.map((answer, i) => ({
+        answer,
+        i,
+        testid: `wrong-answer-${i}`,
+        className: 'wrong-answer',
+        isCorrect: false,
+      })), {
+        answer: questions[index].correct_answer,
+        testid: 'correct-answer',
+        className: 'correct-answer',
+        isCorrect: true,
+      },
+    ];
     return (
       <div>
         <h2>{timer}</h2>
-        { !questions.length
-          ? null
-          : (
-            <div>
-              <h2 data-testid="question-category">{ questions[index].category }</h2>
-              <strong data-testid="question-text">{questions[index].question}</strong>
-              <button
-                type="button"
-                data-testid="correct-answer"
-                className="correct"
-                onClick={ ({ target }) => (
-                  this.handleClick(target, questions[index].difficulty)
-                ) }
-                disabled={ disabled }
-              >
-                { questions[index].correct_answer }
-              </button>
-              { questions[index].incorrect_answers.map((inc, i) => (
-                <button
-                  type="button"
-                  key={ inc }
-                  data-testid={ `wrong-answer-${i}` }
-                  className="wrong"
-                  onClick={ ({ target }) => (
-                    this.handleClick(target, questions[index].difficulty)
-                  ) }
-                  disabled={ disabled }
-                >
-                  {inc}
-                </button>
-              ))}
-            </div>
-          )}
-        {showNext && <button data-testid="btn-next" type="button">Próxima</button>}
+        <h2 data-testid="question-category">{questions[index].category}</h2>
+        <h4 data-testid="question-text">{questions[index].question}</h4>
+        {alternatives.map(({ answer, isCorrect, testid, className }, mapIndex) => (
+          <button
+            type="button"
+            key={ `answer-${mapIndex}` }
+            data-testid={ testid }
+            className={ showAnswers ? `${className} ${isCorrect}` : `${isCorrect}` }
+            disabled={ disabled }
+            onClick={ ({ target }) => (
+              this.handleClick(target, questions[index].difficulty)
+            ) }
+          >
+            {answer}
+          </button>
+        ))}
+        {showNext && (
+          <button
+            data-testid="btn-next"
+            type="button"
+            onClick={ this.clickNext }
+          >
+            Próxima
+          </button>
+        )}
       </div>
     );
   }
