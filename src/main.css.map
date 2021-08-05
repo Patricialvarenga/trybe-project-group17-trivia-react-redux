@@ -1,0 +1,13 @@
+{
+    "version": 3,
+    "mappings": "AIAA,AAAA,eAAe,CAAC;EFCd,MAAM,EEAU,GAAG,CAAE,KAAK,CDDZ,OAAe;CCE9B;;AAED,AAAA,aAAa,CAAC;EFHZ,MAAM,EEIU,GAAG,CAAE,KAAK,CDJhB,GAAc;CCKzB",
+    "sources": [
+        "main.scss",
+        "styles/_styles.scss",
+        "styles/mixins/_buttonborders.scss",
+        "styles/variables/_colors.scss",
+        "styles/_answers.scss"
+    ],
+    "names": [],
+    "file": "main.css"
+}

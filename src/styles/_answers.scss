@@ -1,0 +1,8 @@
+.correct-answer {
+  @include border(2px, solid, $correct-green); 
+}
+
+.wrong-answer {
+  @include border(2px, solid, $wrong-red); 
+}
+

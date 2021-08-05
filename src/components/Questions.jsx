@@ -9,6 +9,14 @@ class Questions extends React.Component {
     this.state = {
       index: 0,
     };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const correctButton = document.querySelector('.correct');
+    const wrongAnswers = document.querySelectorAll('.wrong');
+    correctButton.classList.add('correct-answer');
+    wrongAnswers.forEach((answer) => answer.classList.add('wrong-answer'));
   }
 
   render() {
@@ -20,11 +28,26 @@ class Questions extends React.Component {
           ? null
           : (
             <div>
-              <p data-testid="question-category">{ questions[index].category }</p>
-              <p data-testid="question-text">{questions[index].question}</p>
-              <p data-testid="correct-answer">{ questions[index].correct_answer }</p>
+              <h2 data-testid="question-category">{ questions[index].category }</h2>
+              <strong data-testid="question-text">{questions[index].question}</strong>
+              <button
+                type="button"
+                data-testid="correct-answer"
+                className="correct"
+                onClick={ this.handleClick }
+              >
+                { questions[index].correct_answer }
+              </button>
               { questions[index].incorrect_answers.map((inc, i) => (
-                <p key={ inc } data-testid={ `wrong-answer-${i}` }>{inc}</p>
+                <button
+                  type="button"
+                  key={ inc }
+                  data-testid={ `wrong-answer-${i}` }
+                  className="wrong"
+                  onClick={ this.handleClick }
+                >
+                  {inc}
+                </button>
               ))}
             </div>
           )}
