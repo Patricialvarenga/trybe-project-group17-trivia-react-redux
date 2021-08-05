@@ -8,8 +8,16 @@ class Questions extends React.Component {
 
     this.state = {
       index: 0,
+      disabled: false,
+      timer: 30,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.timerFunction = this.timerFunction.bind(this);
+    this.disableButtons = this.disableButtons.bind(this);
+  }
+
+  componentDidMount() {
+    this.timerFunction();
   }
 
   handleClick() {
@@ -19,11 +27,35 @@ class Questions extends React.Component {
     wrongAnswers.forEach((answer) => answer.classList.add('wrong-answer'));
   }
 
+  disableButtons() {
+    const { timer } = this.state;
+    if (timer === 1) {
+      this.setState({
+        disabled: true,
+      });
+    }
+  }
+
+  timerFunction() {
+    const oneSecond = 1000;
+    setInterval(() => {
+      this.setState((prevState) => {
+        if (prevState.timer !== 0) {
+          return ({
+            ...prevState,
+            timer: prevState.timer - 1,
+          });
+        }
+      }, this.disableButtons());
+    }, oneSecond);
+  }
+
   render() {
-    const { index } = this.state;
+    const { index, disabled, timer } = this.state;
     const { questions } = this.props;
     return (
       <div>
+        <h2>{timer}</h2>
         { !questions.length
           ? null
           : (
@@ -35,6 +67,7 @@ class Questions extends React.Component {
                 data-testid="correct-answer"
                 className="correct"
                 onClick={ this.handleClick }
+                disabled={ disabled }
               >
                 { questions[index].correct_answer }
               </button>
@@ -45,6 +78,7 @@ class Questions extends React.Component {
                   data-testid={ `wrong-answer-${i}` }
                   className="wrong"
                   onClick={ this.handleClick }
+                  disabled={ disabled }
                 >
                   {inc}
                 </button>
