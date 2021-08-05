@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setNewScore } from '../actions';
 
 class Questions extends React.Component {
   constructor() {
@@ -11,6 +12,7 @@ class Questions extends React.Component {
       disabled: false,
       timer: 30,
       showNext: false,
+      score: 0,
     };
     this.handleClick = this.handleClick.bind(this);
     this.timerFunction = this.timerFunction.bind(this);
@@ -21,7 +23,14 @@ class Questions extends React.Component {
     this.timerFunction();
   }
 
-  handleClick() {
+  handleClick(target, diff) {
+    const diffWeight = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const { timer } = this.state;
+    const ten = 10;
     const correctButton = document.querySelector('.correct');
     const wrongAnswers = document.querySelectorAll('.wrong');
     correctButton.classList.add('correct-answer');
@@ -29,6 +38,19 @@ class Questions extends React.Component {
     this.setState({
       showNext: true,
       timer: 0,
+      score: ten + (timer * diffWeight[diff]),
+    }, () => {
+      const { score } = this.state;
+      const { scoreUpdater } = this.props;
+      const newScore = score + ten + (timer * diffWeight[diff]);
+      if (target.classList.contains('correct')) {
+        this.setState({ score: newScore });
+        scoreUpdater(newScore);
+      }
+      if (target.classList.contains('wrong')) {
+        this.setState({ score: 0 });
+        scoreUpdater(0);
+      }
     });
   }
 
@@ -82,7 +104,9 @@ class Questions extends React.Component {
                 type="button"
                 data-testid="correct-answer"
                 className="correct"
-                onClick={ this.handleClick }
+                onClick={ ({ target }) => (
+                  this.handleClick(target, questions[index].difficulty)
+                ) }
                 disabled={ disabled }
               >
                 { questions[index].correct_answer }
@@ -93,7 +117,9 @@ class Questions extends React.Component {
                   key={ inc }
                   data-testid={ `wrong-answer-${i}` }
                   className="wrong"
-                  onClick={ this.handleClick }
+                  onClick={ ({ target }) => (
+                    this.handleClick(target, questions[index].difficulty)
+                  ) }
                   disabled={ disabled }
                 >
                   {inc}
@@ -111,8 +137,13 @@ const mapStateToProps = (state) => ({
   questions: state.game.results,
 });
 
-export default connect(mapStateToProps)(Questions);
+const mapDispatchToProps = (dispatch) => ({
+  scoreUpdater: (score) => dispatch(setNewScore(score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  scoreUpdater: PropTypes.func.isRequired,
 };

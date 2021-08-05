@@ -6,7 +6,7 @@ import Questions from '../components/Questions';
 
 class Game extends Component {
   render() {
-    const { nome, email } = this.props;
+    const { nome, email, score } = this.props;
     const hashGravatar = md5(email).toString();
     return (
       <div>
@@ -17,7 +17,7 @@ class Game extends Component {
             alt="avatar"
           />
           <p data-testid="header-player-name">{ nome }</p>
-          <p data-testid="header-score">0</p>
+          <p data-testid="header-score">{score}</p>
         </header>
         <Questions />
       </div>
@@ -29,6 +29,7 @@ class Game extends Component {
 const mapStateToProps = (state) => ({
   nome: state.player.name,
   email: state.player.email,
+  score: state.game.score,
 });
 
 export default connect(mapStateToProps)(Game);
@@ -36,6 +37,7 @@ export default connect(mapStateToProps)(Game);
 Game.propTypes = {
   nome: PropTypes.string.isRequired,
   email: PropTypes.string,
+  score: PropTypes.number.isRequired,
 };
 
 Game.defaultProps = {

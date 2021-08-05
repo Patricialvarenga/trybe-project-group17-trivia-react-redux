@@ -22,6 +22,13 @@ export const getNameAndEmail = (name, email) => ({
   email,
 });
 
+export const setNameAndEmail = (name, gravatarEmail, score) => (dispatch) => {
+  dispatch(getNameAndEmail(name, gravatarEmail));
+  localStorage.setItem('state', JSON.stringify({
+    player: { name, gravatarEmail, score },
+  }));
+};
+
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const requestQuestions = () => ({
   type: REQUEST_QUESTIONS,
@@ -58,4 +65,18 @@ export const getToken = () => async (dispatch) => {
   } catch (e) {
     dispatch(failRequest(e));
   }
+};
+
+export const UPDATE_SCORE = 'UPDATE_SCORE';
+export const updateScore = (payload) => ({
+  type: UPDATE_SCORE,
+  payload,
+});
+
+export const setNewScore = (score) => (dispatch) => {
+  dispatch(updateScore(score));
+  const storageState = localStorage.getItem('state');
+  const objState = JSON.parse(storageState);
+  const newState = { ...objState.player, score };
+  localStorage.setItem('state', JSON.stringify({ player: newState }));
 };

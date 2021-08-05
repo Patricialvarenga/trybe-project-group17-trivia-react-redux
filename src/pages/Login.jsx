@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
-import { getToken, getNameAndEmail } from '../actions';
+import { getToken, setNameAndEmail } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -19,10 +19,10 @@ class Login extends Component {
 
   async onSubmit(e) {
     e.preventDefault();
-    const { fetchToken, setNameAndEmail } = this.props;
+    const { fetchToken, nameAndEmail, score } = this.props;
     const { name, email } = this.state;
     fetchToken();
-    setNameAndEmail(name, email);
+    nameAndEmail(name, email, score);
     this.setState({ shouldRedirect: true });
   }
 
@@ -98,12 +98,17 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchToken: () => dispatch(getToken()),
-  setNameAndEmail: (name, email) => dispatch(getNameAndEmail(name, email)),
+  nameAndEmail: (name, email, score) => dispatch(setNameAndEmail(name, email, score)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  score: state.game.score,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   fetchToken: PropTypes.func.isRequired,
-  setNameAndEmail: PropTypes.func.isRequired,
+  nameAndEmail: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };

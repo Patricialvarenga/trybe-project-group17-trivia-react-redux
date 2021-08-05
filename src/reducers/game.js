@@ -1,4 +1,6 @@
-import { FAIL_REQUEST_QUESTIONS, RECEIVE_QUESTIONS, REQUEST_QUESTIONS } from '../actions';
+import {
+  FAIL_REQUEST_QUESTIONS, RECEIVE_QUESTIONS, REQUEST_QUESTIONS, UPDATE_SCORE,
+} from '../actions';
 
 const INITIAL_STATE = {
   results: [],
@@ -24,6 +26,11 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       results: action.payload,
+    };
+  case UPDATE_SCORE:
+    return {
+      ...state,
+      score: action.payload,
     };
   default:
     return state;
