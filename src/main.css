@@ -1,8 +1,8 @@
 .correct-answer {
-  border: 2px solid #06f00f;
+  border: 3px solid #06f00f;
 }
 
 .wrong-answer {
-  border: 2px solid red;
+  border: 3px solid red;
 }
 /*# sourceMappingURL=main.css.map */

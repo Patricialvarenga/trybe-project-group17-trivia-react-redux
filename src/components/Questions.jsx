@@ -10,10 +10,11 @@ class Questions extends React.Component {
       index: 0,
       disabled: false,
       timer: 30,
+      showNext: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.timerFunction = this.timerFunction.bind(this);
-    this.disableButtons = this.disableButtons.bind(this);
+    this.timerEnd = this.timerEnd.bind(this);
   }
 
   componentDidMount() {
@@ -25,13 +26,18 @@ class Questions extends React.Component {
     const wrongAnswers = document.querySelectorAll('.wrong');
     correctButton.classList.add('correct-answer');
     wrongAnswers.forEach((answer) => answer.classList.add('wrong-answer'));
+    this.setState({
+      showNext: true,
+      timer: 0,
+    });
   }
 
-  disableButtons() {
+  timerEnd() {
     const { timer } = this.state;
     if (timer === 1) {
       this.setState({
         disabled: true,
+        showNext: true,
       });
     }
   }
@@ -46,12 +52,22 @@ class Questions extends React.Component {
             timer: prevState.timer - 1,
           });
         }
-      }, this.disableButtons());
+      }, this.timerEnd());
     }, oneSecond);
   }
 
+  disableButtons() {
+    const { timer } = this.state;
+    if (timer === 1) {
+      this.setState({
+        disabled: true,
+      });
+    }
+  }
+
   render() {
-    const { index, disabled, timer } = this.state;
+    const { index, disabled, timer, showNext } = this.state;
+
     const { questions } = this.props;
     return (
       <div>
@@ -85,6 +101,7 @@ class Questions extends React.Component {
               ))}
             </div>
           )}
+        {showNext && <button data-testid="btn-next" type="button">Próxima</button>}
       </div>
     );
   }

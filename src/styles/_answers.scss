@@ -1,8 +1,8 @@
 .correct-answer {
-  @include border(2px, solid, $correct-green); 
+  @include border(3px, solid, $correct-green); 
 }
 
 .wrong-answer {
-  @include border(2px, solid, $wrong-red); 
+  @include border(3px, solid, $wrong-red); 
 }
 
