@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { setNewScore } from '../actions';
+import { increaseAssertions, setNewScore } from '../actions';
 
 class Questions extends React.Component {
   constructor() {
@@ -48,11 +48,12 @@ class Questions extends React.Component {
     const { timer } = this.state;
     const ten = 10;
     const { score } = this.state;
-    const { scoreUpdater } = this.props;
+    const { scoreUpdater, plusOne } = this.props;
     const newScore = score + ten + (timer * diffWeight);
     if (target.classList.contains('true')) {
       this.setState({ score: newScore });
       scoreUpdater(newScore);
+      plusOne();
     } else {
       this.setState({ score: 0 });
       scoreUpdater(0);
@@ -74,7 +75,7 @@ class Questions extends React.Component {
     const oneSecond = 1000;
     this.countdown = setInterval(() => {
       this.setState((prevState) => {
-        if (prevState.timer !== 0) {
+        if (prevState.timer > 0) {
           return ({
             ...prevState,
             timer: prevState.timer - 1,
@@ -92,7 +93,6 @@ class Questions extends React.Component {
         index: index + 1, showAnswers: false, showNext: false, disabled: false, timer: 30,
       });
     } else this.setState({ shouldRedirect: true });
-    this.timerFunction();
     this.timerEnd();
   }
 
@@ -137,6 +137,7 @@ class Questions extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   scoreUpdater: (score) => dispatch(setNewScore(score)),
+  plusOne: () => dispatch(increaseAssertions()),
 });
 
 export default connect(null, mapDispatchToProps)(Questions);
@@ -144,4 +145,5 @@ export default connect(null, mapDispatchToProps)(Questions);
 Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   scoreUpdater: PropTypes.func.isRequired,
+  plusOne: PropTypes.func.isRequired,
 };

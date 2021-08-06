@@ -1,11 +1,15 @@
 // import { UPDATE_SCORE } from '../actions';
 import {
-  UPDATE_SCORE, FAIL_REQUEST_QUESTIONS, RECEIVE_QUESTIONS, REQUEST_QUESTIONS,
+  UPDATE_SCORE,
+  FAIL_REQUEST_QUESTIONS,
+  RECEIVE_QUESTIONS,
+  REQUEST_QUESTIONS,
+  INCREASE_ASSERTIONS,
 } from '../actions';
 
 const INITIAL_STATE = {
   results: [],
-  assertions: '',
+  assertions: 0,
   score: 0,
   loading: false,
 };
@@ -33,6 +37,11 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.payload,
+    };
+  case INCREASE_ASSERTIONS:
+    return {
+      ...state,
+      assertions: state.assertions + 1,
     };
   default:
     return state;

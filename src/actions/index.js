@@ -3,7 +3,9 @@ export {
   RECEIVE_QUESTIONS,
   FAIL_REQUEST_QUESTIONS,
   UPDATE_SCORE,
+  INCREASE_ASSERTIONS,
   setNewScore,
+  increaseAssertions,
 } from './game';
 
 export {

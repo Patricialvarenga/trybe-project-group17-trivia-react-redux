@@ -25,7 +25,7 @@ const getNameAndEmail = (name, email) => ({
 export const setNameAndEmail = (name, gravatarEmail, score) => (dispatch) => {
   dispatch(getNameAndEmail(name, gravatarEmail));
   localStorage.setItem('state', JSON.stringify({
-    player: { name, gravatarEmail, score },
+    player: { name, gravatarEmail, score, assertions: 0 },
   }));
 };
 

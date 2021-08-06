@@ -40,3 +40,8 @@ export const setNewScore = (score) => (dispatch) => {
   const newState = { ...objState.player, score: objState.player.score + score };
   localStorage.setItem('state', JSON.stringify({ player: newState }));
 };
+
+export const INCREASE_ASSERTIONS = 'INCREASE_ASSERTIONS';
+export const increaseAssertions = () => ({
+  type: INCREASE_ASSERTIONS,
+});
