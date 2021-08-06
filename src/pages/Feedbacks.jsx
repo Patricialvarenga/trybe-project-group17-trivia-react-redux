@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import FeedbackHeader from '../components/FeedbackHeader';
+import Header from '../components/Header';
 // import { connect } from 'react-redux';
 
 class Feedbacks extends Component {
   render() {
     return (
       <main>
-        <FeedbackHeader />
+        <Header />
         <h1 data-testid="feedback-text">Podia ser melhor...</h1>
       </main>
     );
