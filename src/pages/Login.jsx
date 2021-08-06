@@ -55,7 +55,7 @@ class Login extends Component {
     if (shouldRedirect) return <Redirect to="/game" />;
 
     return (
-      <div>
+      <main>
         <form
           action="GET"
           onSubmit={ this.onSubmit }
@@ -91,7 +91,7 @@ class Login extends Component {
           </button>
           { this.renderButton() }
         </form>
-      </div>
+      </main>
     );
   }
 }

@@ -1,46 +1,72 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import Questions from '../components/Questions';
+import { fetchQuestions } from '../actions/game';
+import Header from '../components/Header';
 
 class Game extends Component {
+  constructor() {
+    super();
+    this.randomizer = this.randomizer.bind(this);
+  }
+
+  componentDidMount() {
+    const { token, getQuestions } = this.props;
+    getQuestions(token);
+  }
+
+  randomizer(arr) {
+    const randomValue = 0.5;
+    const randomizedAlternatives = arr.map((item) => (
+      {
+        question: item.question,
+        category: item.category,
+        difficulty: item.difficulty,
+        alternatives: [
+          ...item.incorrect_answers.map((answer, i) => ({
+            answer,
+            testid: `wrong-answer-${i}`,
+            className: 'wrong-answer',
+            isCorrect: false,
+          })), {
+            answer: item.correct_answer,
+            testid: 'correct-answer',
+            className: 'correct-answer',
+            isCorrect: true,
+          },
+        ].sort(() => Math.random() - randomValue),
+      }
+    ));
+    return (randomizedAlternatives);
+  }
+
   render() {
-    const { nome, email, score } = this.props;
-    const hashGravatar = md5(email).toString();
+    const { questions } = this.props;
+    if (!questions.length) return 'Loading';
     return (
-      <div>
-        <header>
-          <img
-            data-testid="header-profile-picture"
-            src={ `https://www.gravatar.com/avatar/${hashGravatar}` }
-            alt="avatar"
-          />
-          <p data-testid="header-player-name">{ nome }</p>
-          <p data-testid="header-score">{score}</p>
-        </header>
-        <Questions />
-      </div>
+      <main>
+        <Header />
+        <Questions questions={ this.randomizer(questions) } />
+      </main>
 
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  nome: state.player.name,
-  email: state.player.email,
-  score: state.game.score,
+  token: state.player.token,
+  questions: state.game.results,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  getQuestions: (token) => dispatch(fetchQuestions(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
-  nome: PropTypes.string.isRequired,
-  email: PropTypes.string,
-  score: PropTypes.number.isRequired,
-};
-
-Game.defaultProps = {
-  email: undefined,
-
+  token: PropTypes.string.isRequired,
+  getQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

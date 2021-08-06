@@ -1,5 +1,6 @@
+// import { UPDATE_SCORE } from '../actions';
 import {
-  FAIL_REQUEST_QUESTIONS, RECEIVE_QUESTIONS, REQUEST_QUESTIONS, UPDATE_SCORE,
+  UPDATE_SCORE, FAIL_REQUEST_QUESTIONS, RECEIVE_QUESTIONS, REQUEST_QUESTIONS,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -26,11 +27,12 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       results: action.payload,
+      loading: false,
     };
   case UPDATE_SCORE:
     return {
       ...state,
-      score: action.payload,
+      score: state.score + action.payload,
     };
   default:
     return state;
