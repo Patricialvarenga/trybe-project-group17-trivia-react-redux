@@ -48,15 +48,11 @@ class Questions extends React.Component {
     const { timer } = this.state;
     const ten = 10;
     const { score } = this.state;
-    const { scoreUpdater, plusOne } = this.props;
+    const { scoreUpdater } = this.props;
     const newScore = score + ten + (timer * diffWeight);
     if (target.classList.contains('true')) {
       this.setState({ score: newScore });
       scoreUpdater(newScore);
-      plusOne();
-    } else {
-      this.setState({ score: 0 });
-      scoreUpdater(0);
     }
   }
 
@@ -145,5 +141,4 @@ export default connect(null, mapDispatchToProps)(Questions);
 Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   scoreUpdater: PropTypes.func.isRequired,
-  plusOne: PropTypes.func.isRequired,
 };

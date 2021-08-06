@@ -33,15 +33,20 @@ export const fetchQuestions = (token) => async (dispatch) => {
   }
 };
 
-export const setNewScore = (score) => (dispatch) => {
-  dispatch(updateScore(score));
-  const storageState = localStorage.getItem('state');
-  const objState = JSON.parse(storageState);
-  const newState = { ...objState.player, score: objState.player.score + score };
-  localStorage.setItem('state', JSON.stringify({ player: newState }));
-};
-
 export const INCREASE_ASSERTIONS = 'INCREASE_ASSERTIONS';
 export const increaseAssertions = () => ({
   type: INCREASE_ASSERTIONS,
 });
+
+export const setNewScore = (score) => (dispatch) => {
+  dispatch(updateScore(score));
+  dispatch(increaseAssertions());
+  const storageState = localStorage.getItem('state');
+  const objState = JSON.parse(storageState);
+  const newState = {
+    ...objState.player,
+    score: objState.player.score + score,
+    assertions: objState.player.assertions + 1,
+  };
+  localStorage.setItem('state', JSON.stringify({ player: newState }));
+};

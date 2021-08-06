@@ -49,7 +49,6 @@ class Game extends Component {
         <Header />
         <Questions questions={ this.randomizer(questions) } />
       </main>
-
     );
   }
 }
