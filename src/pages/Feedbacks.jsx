@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import FeedbackHeader from '../components/FeedbackHeader';
 // import { connect } from 'react-redux';
 
 class Feedbacks extends Component {
   render() {
     return (
-      <div>
-        <h1>feedback</h1>
-        <textarea data-testid="feedback-text" cols="30" rows="10" />
-      </div>
+      <main>
+        <FeedbackHeader />
+        <h1 data-testid="feedback-text">Podia ser melhor...</h1>
+      </main>
     );
   }
 }

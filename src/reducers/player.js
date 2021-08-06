@@ -2,7 +2,7 @@ import { FAIL_REQUEST, RECEIVE_TOKEN, REQUEST_TOKEN, GET_NAME_EMAIL } from '../a
 
 const INITIAL_STATE = {
   name: '',
-  gravatarEmail: undefined,
+  email: '',
   token: '',
   loading: false,
   error: null,
