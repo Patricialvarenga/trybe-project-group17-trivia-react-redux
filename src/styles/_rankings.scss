@@ -1,0 +1,8 @@
+.row {
+
+  @include row();
+}
+
+.ranking * {
+  padding: 10px;
+}

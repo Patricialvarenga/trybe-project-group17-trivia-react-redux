@@ -5,6 +5,7 @@ import {
   RECEIVE_QUESTIONS,
   REQUEST_QUESTIONS,
   INCREASE_ASSERTIONS,
+  RESET_GAME,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -42,6 +43,13 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       assertions: state.assertions + 1,
+    };
+  case RESET_GAME:
+    return {
+      ...state,
+      results: [],
+      score: 0,
+      assertions: 0,
     };
   default:
     return state;

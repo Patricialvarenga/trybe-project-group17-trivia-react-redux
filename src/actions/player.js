@@ -27,6 +27,10 @@ export const setNameAndEmail = (name, gravatarEmail, score) => (dispatch) => {
   localStorage.setItem('state', JSON.stringify({
     player: { name, gravatarEmail, score, assertions: 0 },
   }));
+  // const rankingStorage = JSON.parse(localStorage.getItem('ranking'));
+  // if (!rankingStorage.length) {
+  //   localStorage.setItem('ranking', JSON.stringify([]));
+  // }
 };
 
 export const getToken = () => async (dispatch) => {

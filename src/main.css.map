@@ -1,12 +1,14 @@
 {
     "version": 3,
-    "mappings": "AIAA,AAAA,eAAe,CAAC;EFCd,MAAM,EEAU,GAAG,CAAE,KAAK,CDDZ,OAAe;CCE9B;;AAED,AAAA,aAAa,CAAC;EFHZ,MAAM,EEIU,GAAG,CAAE,KAAK,CDJhB,GAAc;CCKzB",
+    "mappings": "AKAA,AAAA,eAAe,CAAC;EHCd,MAAM,EGAU,GAAG,CAAE,KAAK,CDDZ,OAAe;CCE9B;;AAED,AAAA,aAAa,CAAC;EHHZ,MAAM,EGIU,GAAG,CAAE,KAAK,CDJhB,GAAc;CCKzB;;ACND,AAAA,IAAI,CAAC;EHCH,OAAO,EAAE,IAAI;EACb,SAAS,EAAE,QAAQ;CGCpB;;AAED,AAAA,QAAQ,CAAC,CAAC,CAAC;EACT,OAAO,EAAE,IAAI;CACd",
     "sources": [
         "main.scss",
         "styles/_styles.scss",
         "styles/mixins/_buttonborders.scss",
+        "styles/mixins/_row.scss",
         "styles/variables/_colors.scss",
-        "styles/_answers.scss"
+        "styles/_answers.scss",
+        "styles/_rankings.scss"
     ],
     "names": [],
     "file": "main.css"

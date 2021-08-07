@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { increaseAssertions, setNewScore } from '../actions';
+import { setNewScore } from '../actions';
 
 class Questions extends React.Component {
   constructor() {
@@ -18,6 +18,9 @@ class Questions extends React.Component {
       shouldRedirect: false,
       showAnswers: false,
     };
+    this.four = 4;
+    this.ten = 10;
+
     this.handleClick = this.handleClick.bind(this);
     this.timerFunction = this.timerFunction.bind(this);
     this.timerEnd = this.timerEnd.bind(this);
@@ -46,10 +49,9 @@ class Questions extends React.Component {
 
   updateScore(diffWeight, target) {
     const { timer } = this.state;
-    const ten = 10;
     const { score } = this.state;
     const { scoreUpdater } = this.props;
-    const newScore = score + ten + (timer * diffWeight);
+    const newScore = score + this.ten + (timer * diffWeight);
     if (target.classList.contains('true')) {
       this.setState({ score: newScore });
       scoreUpdater(newScore);
@@ -83,13 +85,13 @@ class Questions extends React.Component {
 
   clickNext() {
     const { index } = this.state;
-    const four = 4;
-    if (index < four) {
+    if (index < this.four) {
       this.setState({
         index: index + 1, showAnswers: false, showNext: false, disabled: false, timer: 30,
       });
     } else this.setState({ shouldRedirect: true });
     this.timerEnd();
+    this.timerFunction();
   }
 
   render() {
@@ -123,7 +125,7 @@ class Questions extends React.Component {
             type="button"
             onClick={ this.clickNext }
           >
-            Próxima
+            {index < this.four ? 'Próxima' : 'Finalizar'}
           </button>
         )}
       </div>
@@ -133,12 +135,20 @@ class Questions extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   scoreUpdater: (score) => dispatch(setNewScore(score)),
-  plusOne: () => dispatch(increaseAssertions()),
+  // newRank: (name, score, picture) => dispatch(setNewRank(name, score, picture)),
 });
 
-export default connect(null, mapDispatchToProps)(Questions);
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  email: state.player.email,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   scoreUpdater: PropTypes.func.isRequired,
+  // newRank: PropTypes.func.isRequired,
+  // name: PropTypes.string.isRequired,
+  // email: PropTypes.string.isRequired,
 };

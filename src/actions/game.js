@@ -50,3 +50,8 @@ export const setNewScore = (score) => (dispatch) => {
   };
   localStorage.setItem('state', JSON.stringify({ player: newState }));
 };
+
+export const RESET_GAME = 'RESET_GAME';
+export const resetGame = () => ({
+  type: RESET_GAME,
+});

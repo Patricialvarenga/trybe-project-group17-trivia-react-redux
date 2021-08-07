@@ -14,6 +14,10 @@ class Game extends Component {
   componentDidMount() {
     const { token, getQuestions } = this.props;
     getQuestions(token);
+    const rankingStorage = JSON.parse(localStorage.getItem('ranking'));
+    if (!rankingStorage) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
   }
 
   randomizer(arr) {

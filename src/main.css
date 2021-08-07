@@ -5,4 +5,12 @@
 .wrong-answer {
   border: 3px solid red;
 }
-/*# sourceMappingURL=main.css.map */
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.ranking * {
+  padding: 10px;
+}

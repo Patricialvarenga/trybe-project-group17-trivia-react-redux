@@ -4,6 +4,8 @@ export {
   FAIL_REQUEST_QUESTIONS,
   UPDATE_SCORE,
   INCREASE_ASSERTIONS,
+  RESET_GAME,
+  resetGame,
   setNewScore,
   increaseAssertions,
 } from './game';
@@ -16,3 +18,8 @@ export {
   setNameAndEmail,
   getToken,
 } from './player';
+
+export {
+  NEW_RANK,
+  setNewRank,
+} from './ranking';
